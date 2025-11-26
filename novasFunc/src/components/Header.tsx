@@ -1,49 +1,17 @@
 import { Sprout } from 'lucide-react';
 
-import { useEffect, useState } from 'react';
-import { supabase } from '../lib/supabase';
-
 interface HeaderProps {
   currentPage?: string;
   onNavigate: (page: string) => void;
 }
 
 export default function Header({ currentPage = 'inicio', onNavigate }: HeaderProps) {
-  const [isLogged, setIsLogged] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
-
-  useEffect(() => {
-    const init = async () => {
-      const { data } = await supabase.auth.getSession();
-      const user = data.session?.user || null;
-      const tipo = user?.user_metadata?.tipo_usuario || localStorage.getItem('tipo_usuario');
-      setIsLogged(!!user);
-      setIsAdmin(tipo === 'admin');
-    };
-    init();
-
-    const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
-      const user = session?.user || null;
-      const tipo = user?.user_metadata?.tipo_usuario || localStorage.getItem('tipo_usuario');
-      setIsLogged(!!user);
-      setIsAdmin(tipo === 'admin');
-    });
-
-    return () => {
-      sub.subscription.unsubscribe();
-    };
-  }, []);
-
   const navItems = [
     { id: 'inicio', label: 'INÍCIO' },
     { id: 'perfil', label: 'PERFIL' },
     { id: 'publicacoes', label: 'PUBLICAÇÕES' },
     { id: 'catalogo', label: 'CATÁLOGO' },
     { id: 'contato', label: 'CONTATO' },
-    ...(!isLogged ? [
-      { id: 'login', label: 'ENTRAR' },
-      { id: 'cadastro', label: 'CADASTRAR' },
-    ] : []),
   ];
 
   return (
@@ -52,9 +20,15 @@ export default function Header({ currentPage = 'inicio', onNavigate }: HeaderPro
         <div className="text-center">
           <div className="relative inline-block">
             <div className="absolute inset-0 bg-[#A8C686] rounded-full blur-2xl opacity-30 transform scale-150"></div>
-            <Sprout className="w-16 h-16 text-[#A8C686] mx-auto mb-2 relative z-10" strokeWidth={1.5} />
+            <Sprout
+              className="w-16 h-16 text-[#A8C686] mx-auto mb-2 relative z-10"
+              strokeWidth={1.5}
+            />
           </div>
-          <h1 className="text-5xl font-light text-[#F5F1E8] tracking-wide" style={{ fontFamily: 'Georgia, serif' }}>
+          <h1
+            className="text-5xl font-light text-[#F5F1E8] tracking-wide"
+            style={{ fontFamily: 'Georgia, serif' }}
+          >
             FLORESCER
           </h1>
           <p className="text-[#F5F1E8] mt-2 text-sm tracking-wider">
@@ -66,6 +40,7 @@ export default function Header({ currentPage = 'inicio', onNavigate }: HeaderPro
       <nav className="bg-[#5A7C5E] shadow-md">
         <ul className="flex justify-center items-center gap-1 px-4">
           {navItems.map((item) => {
+            // deixa o catálogo ativo tanto em "catalogo" quanto em "catalogoAdmin"
             const isActive =
               item.id === 'catalogo'
                 ? currentPage === 'catalogo' || currentPage === 'catalogoAdmin'
@@ -76,10 +51,17 @@ export default function Header({ currentPage = 'inicio', onNavigate }: HeaderPro
                 <button
                   onClick={() => {
                     if (item.id === 'catalogo') {
-                      const destino = isAdmin ? 'catalogoAdmin' : 'catalogo';
-                      onNavigate(destino);
+                      // usa a mesma chave que o App.tsx
+                      const tipo = localStorage.getItem('tipo_usuario');
+
+                      if (tipo === 'admin') {
+                        onNavigate('catalogoAdmin');
+                      } else {
+                        onNavigate('catalogo');
+                      }
                       return;
                     }
+
                     onNavigate(item.id);
                   }}
                   className={`px-6 py-4 text-sm font-medium tracking-wide transition-all duration-300 hover:bg-[#4A6C4E] ${

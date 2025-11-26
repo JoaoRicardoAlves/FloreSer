@@ -37,15 +37,10 @@ export default function Perfil() {
           >
             PERFIL
           </h2>
-          <button
-            onClick={async () => {
-              await supabase.auth.signOut();
-              localStorage.removeItem('tipo_usuario');
-              alert('Sessão encerrada');
-            }}
-            className="bg-[#E86D47] text-white px-6 py-3 rounded-full hover:bg-[#D85D37] transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
-          >
-            SAIR
+          <button className="bg-[#E86D47] text-white px-6 py-3 rounded-full hover:bg-[#D85D37] transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
+            ALTERAR DADOS
+            <br />
+            <span className="text-sm">SAIR</span>
           </button>
         </div>
 

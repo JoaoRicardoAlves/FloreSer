@@ -7,8 +7,6 @@ import CatalogoAdmin from './pages/CatalogoAdmin';
 import Perfil from './pages/Perfil';
 import Publicacoes from './pages/Publicacoes';
 import Contato from './pages/Contato';
-import Login from './pages/Login';
-import Cadastro from './pages/Cadastro';
 
 function App() {
   const [currentPage, setCurrentPage] = useState('inicio');
@@ -20,17 +18,13 @@ function App() {
       case 'catalogo':
         return <Catalogo />;
       case 'catalogoAdmin':
-        return <CatalogoAdmin />;
+        return <CatalogoAdmin />;   
       case 'perfil':
         return <Perfil />;
       case 'publicacoes':
         return <Publicacoes />;
       case 'contato':
         return <Contato />;
-      case 'login':
-        return <Login />;
-      case 'cadastro':
-        return <Cadastro />;
       default:
         return <Home />;
     }
@@ -38,13 +32,7 @@ function App() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Header
-        currentPage={currentPage}
-        onNavigate={(page) => {
-          (window as any).navigateTo = setCurrentPage;
-          setCurrentPage(page);
-        }}
-      />
+      <Header currentPage={currentPage} onNavigate={setCurrentPage} />
       <main className="flex-1">{renderPage()}</main>
       <Footer />
     </div>
