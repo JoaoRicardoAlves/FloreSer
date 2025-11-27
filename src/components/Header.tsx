@@ -47,24 +47,24 @@ export default function Header({ currentPage = 'inicio', onNavigate }: HeaderPro
   ];
 
   return (
-    <header className="w-full">
-      <div className="bg-[#E86D47] px-6 py-8 flex justify-center items-center">
-        <div className="text-center">
+    <header className="w-full overflow-hidden">
+      <div className="bg-[#E86D47] px-4 py-6 md:px-6 md:py-8 flex justify-center items-center relative">
+        <div className="text-center relative z-10">
           <div className="relative inline-block">
             <div className="absolute inset-0 bg-[#A8C686] rounded-full blur-2xl opacity-30 transform scale-150"></div>
-            <Sprout className="w-16 h-16 text-[#A8C686] mx-auto mb-2 relative z-10" strokeWidth={1.5} />
+            <Sprout className="w-12 h-12 md:w-16 md:h-16 text-[#A8C686] mx-auto mb-2 relative z-10" strokeWidth={1.5} />
           </div>
-          <h1 className="text-5xl font-light text-[#F5F1E8] tracking-wide" style={{ fontFamily: 'Georgia, serif' }}>
+          <h1 className="text-3xl md:text-5xl font-light text-[#F5F1E8] tracking-wide break-words" style={{ fontFamily: 'Georgia, serif' }}>
             FLORESCER
           </h1>
-          <p className="text-[#F5F1E8] mt-2 text-sm tracking-wider">
+          <p className="text-[#F5F1E8] mt-2 text-xs md:text-sm tracking-wider">
             Conectando você à essência da natureza
           </p>
         </div>
       </div>
 
       <nav className="bg-[#5A7C5E] shadow-md">
-        <ul className="flex justify-center items-center gap-1 px-4">
+        <ul className="flex flex-wrap justify-center items-center gap-1 px-2 md:px-4 py-2">
           {navItems.map((item) => {
             const isActive =
               item.id === 'catalogo'
@@ -82,9 +82,8 @@ export default function Header({ currentPage = 'inicio', onNavigate }: HeaderPro
                     }
                     onNavigate(item.id);
                   }}
-                  className={`px-6 py-4 text-sm font-medium tracking-wide transition-all duration-300 hover:bg-[#4A6C4E] ${
-                    isActive ? 'text-white bg-[#4A6C4E]' : 'text-[#F5F1E8]'
-                  }`}
+                  className={`px-3 py-2 md:px-6 md:py-4 text-xs md:text-sm font-medium tracking-wide transition-all duration-300 hover:bg-[#4A6C4E] rounded-lg md:rounded-none ${isActive ? 'text-white bg-[#4A6C4E]' : 'text-[#F5F1E8]'
+                    }`}
                   aria-current={isActive ? 'page' : undefined}
                 >
                   {item.label}
