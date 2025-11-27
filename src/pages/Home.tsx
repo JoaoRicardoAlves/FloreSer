@@ -39,13 +39,13 @@ export default function Home() {
           <div className="max-w-4xl mx-auto text-[#4A3933] leading-relaxed space-y-4">
             <p className="text-lg">
               <span className="inline-block mr-2">🌱</span>
-              <strong>O FLORESCER NASCE A PARTIR DE UMA REFLEXÃO ESSENCIAL:</strong> DE QUE MANEIRA PODEMOS CONTRIBUIR PARA MUDAR O PLANETA?
+              <strong>O Florescer nasce de uma reflexão essencial:</strong> como podemos contribuir, de forma real, para transformar o planeta?
             </p>
             <p>
-              Este projeto tem como objetivo <strong>RAPIDINHO</strong>, reduzir o paísado de casa começou na atmosfera, promovendo o plantio de mudas nativas específicas de cada região do país. Ao fazer isso, <strong>BUSCAMOS NÃO APENAS REVERTER A DEGRADAÇÃO DAS MUDANÇAS CLIMÁTICAS</strong>, mas também para a população das origens das áreas verdes nas metrópoles espalhados pelo Brasil.
+              Nosso propósito é reduzir os impactos ambientais e recuperar áreas degradadas por meio do plantio de mudas nativas, respeitando as características de cada região do país. Assim, buscamos não apenas combater os efeitos das mudanças climáticas, mas também restaurar a presença de áreas verdes nas metrópoles e incentivar uma relação mais harmoniosa entre pessoas e natureza.
             </p>
             <p>
-              Com foco em <strong>SUSTENTABILIDADE E RESPEITO À BIODIVERSIDADE LOCAL</strong>, o Florescer visa transformar nossas cidades em espaços mais verdes e saudáveis, <strong>RECICLANDO UM AMBIENTE EQUILIBRADO PARA AS FUTURAS GERAÇÕES</strong>. 🌿
+              Com foco em <strong>sustentabilidade e preservação da biodiversidade</strong>, o Florescer visa transformar nossas cidades em lugares mais saudáveis, verdes e acolhedores — cultivando um ambiente equilibrado para as futuras gerações. 🌿
             </p>
           </div>
         </div>
@@ -65,6 +65,7 @@ export default function Home() {
                     <img
                       src={featuredPlant.imagem_url || ''}
                       alt={featuredPlant.nome}
+                      loading="lazy"
                       className="w-full h-full object-cover"
                     />
                   </div>
@@ -95,6 +96,7 @@ export default function Home() {
                     <img
                       src={featuredArea.imagem_url || ''}
                       alt={featuredArea.nome}
+                      loading="lazy"
                       className="w-full h-full object-cover"
                     />
                   </div>

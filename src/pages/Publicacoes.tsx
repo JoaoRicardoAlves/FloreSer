@@ -6,18 +6,29 @@ export default function Publicacoes() {
   const [publicacoes, setPublicacoes] = useState<Publicacao[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedPost, setSelectedPost] = useState<Publicacao | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     loadPublicacoes();
   }, []);
 
   const loadPublicacoes = async () => {
-    const { data } = await supabase
-      .from('publicacoes')
-      .select('*')
-      .order('visualizacoes', { ascending: false });
-
-    if (data) setPublicacoes(data);
+    setLoading(true);
+    setError(null);
+    try {
+      const { data, error } = await supabase
+        .from('publicacoes')
+        .select('*')
+        .order('visualizacoes', { ascending: false });
+      if (error) throw error;
+      setPublicacoes(data || []);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'Falha ao carregar publicações.';
+      setError(msg);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const filteredPublicacoes = publicacoes.filter((pub) =>
@@ -54,6 +65,7 @@ export default function Publicacoes() {
                     <img
                       src={selectedPost.imagem_capa_url}
                       alt={selectedPost.titulo}
+                      loading="lazy"
                       className="w-full h-full object-cover"
                     />
                   </div>
@@ -85,10 +97,17 @@ export default function Publicacoes() {
             ) : (
               <div className="bg-white rounded-3xl p-8 shadow-xl min-h-[500px] flex items-center justify-center">
                 <div className="text-center">
+                  {loading && (
+                    <p className="text-[#5A7C5E] mb-6">Carregando...</p>
+                  )}
+                  {error && (
+                    <p className="text-[#E86D47] mb-6" role="alert" aria-live="polite">{error}</p>
+                  )}
                   <div className="w-64 h-64 mx-auto mb-6 rounded-2xl overflow-hidden bg-gradient-to-br from-[#A8C686]/20 to-[#E86D47]/20">
                     <img
                       src="https://images.pexels.com/photos/1072179/pexels-photo-1072179.jpeg"
                       alt="Natureza"
+                      loading="lazy"
                       className="w-full h-full object-cover opacity-40"
                     />
                   </div>

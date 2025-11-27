@@ -26,27 +26,30 @@ export default function Contato() {
 
             <form className="space-y-4">
               <div>
-                <label className="block text-[#4A3933] font-medium mb-2">Nome</label>
+                <label htmlFor="contato-nome" className="block text-[#4A3933] font-medium mb-2">Nome</label>
                 <input
                   type="text"
+                  id="contato-nome"
                   className="w-full px-4 py-3 rounded-2xl border-2 border-[#A8C686]/30 focus:border-[#E86D47] focus:outline-none transition-colors duration-300"
                   placeholder="Seu nome completo"
                 />
               </div>
 
               <div>
-                <label className="block text-[#4A3933] font-medium mb-2">Email</label>
+                <label htmlFor="contato-email" className="block text-[#4A3933] font-medium mb-2">Email</label>
                 <input
                   type="email"
+                  id="contato-email"
                   className="w-full px-4 py-3 rounded-2xl border-2 border-[#A8C686]/30 focus:border-[#E86D47] focus:outline-none transition-colors duration-300"
                   placeholder="seu@email.com"
                 />
               </div>
 
               <div>
-                <label className="block text-[#4A3933] font-medium mb-2">Mensagem</label>
+                <label htmlFor="contato-mensagem" className="block text-[#4A3933] font-medium mb-2">Mensagem</label>
                 <textarea
                   rows={5}
+                  id="contato-mensagem"
                   className="w-full px-4 py-3 rounded-2xl border-2 border-[#A8C686]/30 focus:border-[#E86D47] focus:outline-none transition-colors duration-300 resize-none"
                   placeholder="Como podemos ajudar você?"
                 ></textarea>

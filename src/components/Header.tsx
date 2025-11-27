@@ -1,11 +1,11 @@
 import { Sprout } from 'lucide-react';
-
 import { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
+import type { PageId } from '../context/NavigationContext';
 
 interface HeaderProps {
-  currentPage?: string;
-  onNavigate: (page: string) => void;
+  currentPage?: PageId;
+  onNavigate: (page: PageId) => void;
 }
 
 export default function Header({ currentPage = 'inicio', onNavigate }: HeaderProps) {
@@ -16,7 +16,7 @@ export default function Header({ currentPage = 'inicio', onNavigate }: HeaderPro
     const init = async () => {
       const { data } = await supabase.auth.getSession();
       const user = data.session?.user || null;
-      const tipo = user?.user_metadata?.tipo_usuario || localStorage.getItem('tipo_usuario');
+      const tipo = user?.user_metadata?.tipo_usuario;
       setIsLogged(!!user);
       setIsAdmin(tipo === 'admin');
     };
@@ -24,7 +24,7 @@ export default function Header({ currentPage = 'inicio', onNavigate }: HeaderPro
 
     const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
       const user = session?.user || null;
-      const tipo = user?.user_metadata?.tipo_usuario || localStorage.getItem('tipo_usuario');
+      const tipo = user?.user_metadata?.tipo_usuario;
       setIsLogged(!!user);
       setIsAdmin(tipo === 'admin');
     });
@@ -35,14 +35,14 @@ export default function Header({ currentPage = 'inicio', onNavigate }: HeaderPro
   }, []);
 
   const navItems = [
-    { id: 'inicio', label: 'INÍCIO' },
-    { id: 'perfil', label: 'PERFIL' },
-    { id: 'publicacoes', label: 'PUBLICAÇÕES' },
-    { id: 'catalogo', label: 'CATÁLOGO' },
-    { id: 'contato', label: 'CONTATO' },
+    { id: 'inicio' as const, label: 'INÍCIO' },
+    { id: 'perfil' as const, label: 'PERFIL' },
+    { id: 'publicacoes' as const, label: 'PUBLICAÇÕES' },
+    { id: 'catalogo' as const, label: 'CATÁLOGO' },
+    { id: 'contato' as const, label: 'CONTATO' },
     ...(!isLogged ? [
-      { id: 'login', label: 'ENTRAR' },
-      { id: 'cadastro', label: 'CADASTRAR' },
+      { id: 'login' as const, label: 'ENTRAR' },
+      { id: 'cadastro' as const, label: 'CADASTRAR' },
     ] : []),
   ];
 
@@ -85,6 +85,7 @@ export default function Header({ currentPage = 'inicio', onNavigate }: HeaderPro
                   className={`px-6 py-4 text-sm font-medium tracking-wide transition-all duration-300 hover:bg-[#4A6C4E] ${
                     isActive ? 'text-white bg-[#4A6C4E]' : 'text-[#F5F1E8]'
                   }`}
+                  aria-current={isActive ? 'page' : undefined}
                 >
                   {item.label}
                 </button>

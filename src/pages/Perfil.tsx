@@ -76,6 +76,7 @@ export default function Perfil() {
                     <img
                       src={selectedPlant.imagem_url || ''}
                       alt={selectedPlant.nome}
+                      loading="lazy"
                       className="w-full h-full object-cover"
                     />
                   </div>

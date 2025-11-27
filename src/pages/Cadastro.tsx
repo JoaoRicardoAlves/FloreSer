@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { supabase } from '../lib/supabase';
+import { useNavigation } from '../context/NavigationContext';
 
 export default function Cadastro() {
   const [nome, setNome] = useState('');
@@ -9,6 +10,7 @@ export default function Cadastro() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { navigate } = useNavigation();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,7 +23,7 @@ export default function Cadastro() {
 
     setLoading(true);
 
-    const { data, error } = await supabase.auth.signUp({
+    const { error } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -39,9 +41,7 @@ export default function Cadastro() {
       return;
     }
 
-    const tipo = data.user?.user_metadata?.tipo_usuario ?? 'user';
-    localStorage.setItem('tipo_usuario', tipo);
-    (window as any).navigateTo?.('inicio');
+    navigate('inicio');
   };
 
   return (
@@ -54,9 +54,10 @@ export default function Cadastro() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-[#4A3933] font-medium mb-2">Nome</label>
+              <label htmlFor="cadastro-nome" className="block text-[#4A3933] font-medium mb-2">Nome</label>
               <input
                 type="text"
+                id="cadastro-nome"
                 className="w-full px-4 py-3 rounded-2xl border-2 border-[#A8C686]/30 focus:border-[#E86D47] focus:outline-none"
                 placeholder="Seu nome"
                 value={nome}
@@ -66,9 +67,10 @@ export default function Cadastro() {
             </div>
 
             <div>
-              <label className="block text-[#4A3933] font-medium mb-2">Email</label>
+              <label htmlFor="cadastro-email" className="block text-[#4A3933] font-medium mb-2">Email</label>
               <input
                 type="email"
+                id="cadastro-email"
                 className="w-full px-4 py-3 rounded-2xl border-2 border-[#A8C686]/30 focus:border-[#E86D47] focus:outline-none"
                 placeholder="seu@email.com"
                 value={email}
@@ -78,9 +80,10 @@ export default function Cadastro() {
             </div>
 
             <div>
-              <label className="block text-[#4A3933] font-medium mb-2">Senha</label>
+              <label htmlFor="cadastro-senha" className="block text-[#4A3933] font-medium mb-2">Senha</label>
               <input
                 type="password"
+                id="cadastro-senha"
                 className="w-full px-4 py-3 rounded-2xl border-2 border-[#A8C686]/30 focus:border-[#E86D47] focus:outline-none"
                 placeholder="••••••••"
                 value={password}
@@ -90,9 +93,10 @@ export default function Cadastro() {
             </div>
 
             <div>
-              <label className="block text-[#4A3933] font-medium mb-2">Confirmar Senha</label>
+              <label htmlFor="cadastro-confirm" className="block text-[#4A3933] font-medium mb-2">Confirmar Senha</label>
               <input
                 type="password"
+                id="cadastro-confirm"
                 className="w-full px-4 py-3 rounded-2xl border-2 border-[#A8C686]/30 focus:border-[#E86D47] focus:outline-none"
                 placeholder="••••••••"
                 value={confirm}
@@ -111,7 +115,7 @@ export default function Cadastro() {
               <label htmlFor="isAdmin" className="text-[#4A3933] text-sm">Sou administrador</label>
             </div>
 
-            {error && <p className="text-[#E86D47] text-sm">{error}</p>}
+            {error && <p className="text-[#E86D47] text-sm" role="alert" aria-live="polite">{error}</p>}
 
             <button
               type="submit"
@@ -123,7 +127,11 @@ export default function Cadastro() {
           </form>
 
           <div className="text-center mt-4">
-            <a href="#" className="text-[#5A7C5E]" onClick={() => (window as any).navigateTo?.('login')}>
+            <a
+              href="#"
+              className="text-[#5A7C5E]"
+              onClick={(e) => { e.preventDefault(); navigate('login'); }}
+            >
               Já tem conta? Entrar
             </a>
           </div>

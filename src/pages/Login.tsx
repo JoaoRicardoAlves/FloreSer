@@ -1,18 +1,20 @@
 import { useState } from 'react';
 import { supabase } from '../lib/supabase';
+import { useNavigation } from '../context/NavigationContext';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { navigate } = useNavigation();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
 
-    const { data, error } = await supabase.auth.signInWithPassword({
+    const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
@@ -24,9 +26,7 @@ export default function Login() {
       return;
     }
 
-    const tipo = data.user?.user_metadata?.tipo_usuario ?? 'user';
-    localStorage.setItem('tipo_usuario', tipo);
-    (window as any).navigateTo?.('inicio');
+    navigate('inicio');
   };
 
   return (
@@ -39,9 +39,10 @@ export default function Login() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-[#4A3933] font-medium mb-2">Email</label>
+              <label htmlFor="login-email" className="block text-[#4A3933] font-medium mb-2">Email</label>
               <input
                 type="email"
+                id="login-email"
                 className="w-full px-4 py-3 rounded-2xl border-2 border-[#A8C686]/30 focus:border-[#E86D47] focus:outline-none"
                 placeholder="seu@email.com"
                 value={email}
@@ -51,9 +52,10 @@ export default function Login() {
             </div>
 
             <div>
-              <label className="block text-[#4A3933] font-medium mb-2">Senha</label>
+              <label htmlFor="login-password" className="block text-[#4A3933] font-medium mb-2">Senha</label>
               <input
                 type="password"
+                id="login-password"
                 className="w-full px-4 py-3 rounded-2xl border-2 border-[#A8C686]/30 focus:border-[#E86D47] focus:outline-none"
                 placeholder="••••••••"
                 value={password}
@@ -62,7 +64,7 @@ export default function Login() {
               />
             </div>
 
-            {error && <p className="text-[#E86D47] text-sm">{error}</p>}
+            {error && <p className="text-[#E86D47] text-sm" role="alert" aria-live="polite">{error}</p>}
 
             <button
               type="submit"
@@ -74,7 +76,11 @@ export default function Login() {
           </form>
 
           <div className="text-center mt-4">
-            <a href="#" className="text-[#5A7C5E]" onClick={() => (window as any).navigateTo?.('cadastro')}>
+            <a
+              href="#"
+              className="text-[#5A7C5E]"
+              onClick={(e) => { e.preventDefault(); navigate('cadastro'); }}
+            >
               Não tem conta? Cadastre-se
             </a>
           </div>
